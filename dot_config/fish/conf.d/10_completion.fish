@@ -15,7 +15,7 @@ if command -q starship
 end
 
 if command -q zoxide
-    zoxide init fish | source
+    zoxide init fish --cmd cd | source
 end
 
 # fzf 統合は PatrickF1/fzf.fish プラグインが担当（fish_plugins 参照）
