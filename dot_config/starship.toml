@@ -25,8 +25,7 @@ style  = "bold purple"
 style = "bold red"
 
 [jj_status]
-format = "[󰊢  $all_status$ahead_count$behind_count]($style) "
-style  = "bold yellow"
+format = "[󰊢  $all_status$ahead_count$behind_count](bold yellow) "
 
 [character]
 success_symbol = "[❯](bold green)"
