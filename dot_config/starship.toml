@@ -25,10 +25,8 @@ style  = "bold purple"
 style = "bold red"
 
 [jj_status]
-symbol            = "󰊢 "
-style             = "bold yellow"
-conflicted        = "⚡"
-diverged          = "⇕"
+symbol = "󰊢 "
+style  = "bold yellow"
 
 [character]
 success_symbol = "[❯](bold green)"

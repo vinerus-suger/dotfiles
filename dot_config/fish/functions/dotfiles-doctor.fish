@@ -66,7 +66,16 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
             set prev_section $section
         end
 
-        if command -q $cmd
+        # fisher は fish 関数なので command -q では検出できない
+        if test "$cmd" = fisher
+            if functions -q fisher
+                echo "✅ $name (fish function)"
+                set ok (math $ok + 1)
+            else
+                echo "❌ $name (not installed)"
+                set ng (math $ng + 1)
+            end
+        else if command -q $cmd
             echo "✅ $name ("(command -v $cmd)")"
             set ok (math $ok + 1)
         else
