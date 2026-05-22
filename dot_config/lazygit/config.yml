@@ -1,0 +1,19 @@
+gui:
+  theme:
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - white
+    selectedLineBgColor:
+      - blue
+  showIcons: true
+  mouseEvents: true
+
+git:
+  paging:
+    colorArg: always
+    pager: "bat --style=plain --color=always"
+
+os:
+  editPreset: helix

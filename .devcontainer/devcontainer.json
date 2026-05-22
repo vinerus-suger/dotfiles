@@ -1,0 +1,6 @@
+{
+  "dotfiles": {
+    "repository": "https://github.com/<YOUR_USERNAME>/dotfiles",
+    "installCommand": "~/dotfiles/install.sh"
+  }
+}

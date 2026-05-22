@@ -1,0 +1,38 @@
+#!/bin/bash
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+{{ if .is_mac -}}
+# Brewfile.mac hash: {{ include "Brewfile.mac" | sha256sum }}
+{{- end }}
+
+set -e
+
+# brew が PATH にない場合は shellenv を読む（直前のスクリプトでインストール直後など）
+if ! command -v brew &>/dev/null; then
+  if [ -d /home/linuxbrew/.linuxbrew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  elif [ -d /opt/homebrew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -d /usr/local/Homebrew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  else
+    echo "Error: brew not found"
+    exit 1
+  fi
+fi
+
+BREWFILE="{{ .chezmoi.sourceDir }}/Brewfile"
+
+if [ -f "$BREWFILE" ]; then
+  echo "Installing packages from Brewfile..."
+  brew bundle --file="$BREWFILE"
+else
+  echo "Brewfile not found, skipping."
+fi
+
+{{ if .is_mac -}}
+BREWFILE_MAC="{{ .chezmoi.sourceDir }}/Brewfile.mac"
+if [ -f "$BREWFILE_MAC" ]; then
+  echo "Installing Mac-only packages from Brewfile.mac..."
+  brew bundle --file="$BREWFILE_MAC"
+fi
+{{- end }}

@@ -1,0 +1,14 @@
+# chezmoi の管理対象から除外（target=~/ には配置しない）
+
+# ── リポジトリメタ ────────────────────────────
+README.md
+.git
+.gitignore
+.github
+.devcontainer
+
+# ── スクリプトが参照する管理ファイル ─────────
+# これらは source 内では使うが、ホームディレクトリには置きたくない
+Brewfile
+Brewfile.mac
+install.sh

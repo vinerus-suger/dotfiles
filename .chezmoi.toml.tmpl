@@ -1,0 +1,22 @@
+{{- $is_wsl := false -}}
+{{- $is_mac := false -}}
+{{- $is_devcontainer := false -}}
+
+{{- if env "WSL_DISTRO_NAME" -}}
+  {{- $is_wsl = true -}}
+{{- else if eq .chezmoi.os "darwin" -}}
+  {{- $is_mac = true -}}
+{{- end -}}
+
+{{- if or (env "REMOTE_CONTAINERS") (env "CODESPACES") -}}
+  {{- $is_devcontainer = true -}}
+{{- end -}}
+
+# DevContainer / Codespaces ではクローン先が chezmoi のデフォルトと異なるため
+# sourceDir を明示的に記録しておく
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+[data]
+  is_wsl          = {{ $is_wsl }}
+  is_mac          = {{ $is_mac }}
+  is_devcontainer = {{ $is_devcontainer }}

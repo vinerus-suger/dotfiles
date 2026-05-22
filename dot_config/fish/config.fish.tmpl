@@ -1,0 +1,22 @@
+# ── 基本設定 ──────────────────────────────────
+set -g fish_greeting ""
+
+# ── エディタ ──────────────────────────────────
+set -gx EDITOR hx
+set -gx VISUAL hx
+
+# ── bat テーマ ────────────────────────────────
+set -gx BAT_THEME "Catppuccin Mocha"
+
+# ── WSL 固有 ──────────────────────────────────
+{{ if .is_wsl -}}
+set -gx BROWSER wslview
+# Windows 側クリップボード連携
+alias pbcopy  'clip.exe'
+alias pbpaste 'powershell.exe -command Get-Clipboard'
+{{- end }}
+
+# ── Mac 固有 ──────────────────────────────────
+{{ if .is_mac -}}
+# Mac 固有の設定があればここに追加
+{{- end }}
