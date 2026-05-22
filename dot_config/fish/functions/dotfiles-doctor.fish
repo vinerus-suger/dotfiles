@@ -103,6 +103,8 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
     set -l fish_path (command -v fish 2>/dev/null)
     if test "$SHELL" = "$fish_path"
         echo "✅ default shell is fish ($fish_path)"
+    else if test -n "$REMOTE_CONTAINERS"; or test -n "$CODESPACES"
+        echo "ℹ️  default shell: bash → fish (auto-exec via .bashrc, expected in DevContainer)"
     else
         echo "⚠️  default shell: $SHELL (expected: $fish_path)"
     end
