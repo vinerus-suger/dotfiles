@@ -30,5 +30,7 @@ abbr -a czu  'chezmoi update'
 abbr -a czcd 'chezmoi cd'
 
 # ── ナビゲーション ────────────────────────────
-abbr -a ..   'cd ..'
-abbr -a du   'dust'
+abbr -a ..    'cd ..'
+abbr -a ...   'cd ../..'
+abbr -a ....  'cd ../../..'
+abbr -a du    'dust'

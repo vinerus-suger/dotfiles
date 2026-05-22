@@ -71,7 +71,6 @@ VS Code のユーザー設定に登録するだけで、コンテナ起動時に
 | jorgebucaran/autopair.fish | 括弧・クォートの自動補完 |
 | franciscolourenco/done | 長時間コマンド完了時に通知 |
 | decors/fish-colored-man | man ページに色付け |
-| jorgebucaran/puffer.fish | `...` を `../..` に展開等 |
 | gazorby/fish-abbreviation-tips | 省略形があるコマンドにヒント表示 |
 | meaningful-ooo/sponge | 失敗したコマンドを履歴から除外 |
 | oh-my-fish/plugin-foreign-env | bash/zsh の env ファイル読み込み |
