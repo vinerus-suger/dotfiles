@@ -1,0 +1,34 @@
+# Jujutsu (jj) 設定
+# Reference: https://jj-vcs.github.io/jj/latest/config/
+
+[ui]
+editor          = "hx"
+diff-editor     = ":builtin"           # built-in diff editor を明示
+diff.format     = "color-words"
+pager           = "delta"
+paginate        = "never"              # ターミナルで直接出力（ベストプラクティス）
+default-command = "log"                # `jj` 単体で `jj log` を実行
+
+[git]
+push-bookmark-prefix = "push-"
+
+[snapshot]
+# 全ファイルを自動 track する（デフォルト挙動）
+# Note: 誤って大きな成果物を含めるリスクを減らしたい場合は "none()" に変更
+auto-track = "all()"
+
+[aliases]
+# bookmark を HEAD@git の位置から @ に移動するエイリアス
+tug = ["bookmark", "move", "--from", "trunk()..@-", "--to", "@-"]
+
+[colors]
+"diff added"     = "green"
+"diff removed"   = "red"
+bookmarks        = { fg = "bright green", bold = true }
+tags             = "green"
+git_head         = "blue"
+git_refs         = "blue"
+
+[lazyjj]
+highlight-color = "#323264"
+diff-format     = "color-words"

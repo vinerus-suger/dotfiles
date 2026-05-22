@@ -1,0 +1,36 @@
+[core]
+  editor       = hx
+  pager        = delta
+  excludesfile = ~/.config/git/ignore
+  autocrlf     = false
+
+[init]
+  defaultBranch = main
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate     = true
+  light        = false
+  side-by-side = true
+  line-numbers = true
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+
+[alias]
+  lg = log --oneline --graph --decorate --all
+  st = status
+  co = checkout
+
+[pull]
+  rebase = false
+
+{{ if .is_wsl -}}
+[credential]
+  helper = "/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe"
+{{- end }}

@@ -1,0 +1,36 @@
+#!/bin/bash
+# bat の Catppuccin テーマをインストール
+set -e
+
+# brew が PATH にない場合はロード
+if ! command -v brew &>/dev/null; then
+  if [ -d /home/linuxbrew/.linuxbrew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  elif [ -d /opt/homebrew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -d /usr/local/Homebrew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
+if ! command -v bat &>/dev/null; then
+  echo "bat not installed yet, skipping bat theme setup."
+  exit 0
+fi
+
+THEME_DIR="$(bat --config-dir)/themes"
+mkdir -p "$THEME_DIR"
+
+# Catppuccin/bat から .tmTheme を取得
+BASE_URL="https://github.com/catppuccin/bat/raw/main/themes"
+for theme in "Catppuccin Mocha" "Catppuccin Macchiato" "Catppuccin Frappe" "Catppuccin Latte"; do
+  filename="${theme}.tmTheme"
+  if [ ! -f "$THEME_DIR/$filename" ]; then
+    echo "Downloading $filename..."
+    curl -fsSL "${BASE_URL}/${filename// /%20}" -o "$THEME_DIR/$filename"
+  fi
+done
+
+# テーマキャッシュを再構築
+bat cache --build
+echo "bat themes installed."

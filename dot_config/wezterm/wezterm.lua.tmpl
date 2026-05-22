@@ -1,0 +1,79 @@
+local wezterm = require("wezterm")
+local config  = wezterm.config_builder()
+
+-- ── フォント（複数指定で自動フォールバック）──
+-- HackGenNerd: Japanese support + Nerd Font icons (Mac は cask で自動インストール)
+-- WSLの場合は Windows 側にフォントを手動インストールが必要
+config.font = wezterm.font_with_fallback({
+  "HackGen35 Console NF",
+  "HackGenNerd Console",
+  "JetBrainsMono Nerd Font",
+  "Menlo",
+  "Consolas",
+})
+config.font_size = 13.0
+
+-- ── カラースキーム（Catppuccin Mocha）────────
+config.color_scheme = "Catppuccin Mocha"
+
+-- ── タブバー ──────────────────────────────────
+config.use_fancy_tab_bar     = false
+config.tab_bar_at_bottom     = true
+config.hide_tab_bar_if_only_one_tab = false
+
+-- ── ウィンドウ ────────────────────────────────
+config.window_padding = {
+  left   = 8,
+  right  = 8,
+  top    = 4,
+  bottom = 4,
+}
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 20
+
+-- ── スクロール ────────────────────────────────
+config.scrollback_lines = 10000
+
+-- ── ベル無効 ──────────────────────────────────
+config.audible_bell = "Disabled"
+
+-- ── OS 別設定 ─────────────────────────────────
+{{ if .is_wsl -}}
+-- WSL: デフォルトシェルを WSL の fish に設定
+config.default_prog = { "wsl.exe", "--", "fish" }
+
+{{ else if .is_mac -}}
+-- Mac: Homebrew の fish を使用（Apple Silicon / Intel 両対応）
+local function file_exists(path)
+  local f = io.open(path, "r")
+  if f then f:close(); return true end
+  return false
+end
+
+if file_exists("/opt/homebrew/bin/fish") then
+  config.default_prog = { "/opt/homebrew/bin/fish" }
+elseif file_exists("/usr/local/bin/fish") then
+  config.default_prog = { "/usr/local/bin/fish" }
+end
+
+-- Mac: Option キーを Meta として使用
+config.send_composed_key_when_left_alt_down  = false
+config.send_composed_key_when_right_alt_down = false
+{{- end }}
+
+-- ── キーバインド ──────────────────────────────
+config.keys = {
+  -- タブ操作
+  { key = "t", mods = "SUPER",       action = wezterm.action.SpawnTab("CurrentPaneDomain") },
+  { key = "w", mods = "SUPER",       action = wezterm.action.CloseCurrentTab({ confirm = true }) },
+  -- ペイン分割
+  { key = "d", mods = "SUPER",       action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+  { key = "d", mods = "SUPER|SHIFT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+  -- ペイン移動
+  { key = "h", mods = "SUPER",       action = wezterm.action.ActivatePaneDirection("Left") },
+  { key = "l", mods = "SUPER",       action = wezterm.action.ActivatePaneDirection("Right") },
+  { key = "j", mods = "SUPER",       action = wezterm.action.ActivatePaneDirection("Down") },
+  { key = "k", mods = "SUPER",       action = wezterm.action.ActivatePaneDirection("Up") },
+}
+
+return config

@@ -1,0 +1,41 @@
+#!/bin/bash
+# WSL 専用: WezTerm 設定を Windows 側へコピー
+# wezterm config hash: {{ include "dot_config/wezterm/wezterm.lua.tmpl" | sha256sum }}
+#
+# 注: WSL から /mnt/c へのシンボリックリンク (ln -s) は "LX symlink" となり、
+#     Windows 側の WezTerm からは認識できないため、コピーで同期する。
+# 注: run_onchange_* により wezterm.lua.tmpl の変更時に自動で再同期される。
+
+{{ if .is_wsl -}}
+echo "Setting up WSL config sync for Windows..."
+
+# Windows ユーザーフォルダのパスを取得
+if ! command -v cmd.exe &>/dev/null; then
+  echo "cmd.exe not available, skipping."
+  exit 0
+fi
+
+WIN_HOME=$(wslpath "$(cmd.exe /c echo %USERPROFILE% 2>/dev/null | tr -d '\r')" 2>/dev/null)
+
+if [ -z "$WIN_HOME" ] || [ ! -d "$WIN_HOME" ]; then
+  echo "Could not determine Windows user folder, skipping."
+  exit 0
+fi
+
+# WezTerm 設定をコピー
+# 公式推奨の配置場所は %USERPROFILE%/.wezterm.lua または %USERPROFILE%/.config/wezterm/wezterm.lua
+WEZTERM_SRC="$HOME/.config/wezterm/wezterm.lua"
+WEZTERM_DST="$WIN_HOME/.config/wezterm/wezterm.lua"
+
+if [ ! -f "$WEZTERM_SRC" ]; then
+  echo "WezTerm config not found at $WEZTERM_SRC, skipping."
+  exit 0
+fi
+
+mkdir -p "$WIN_HOME/.config/wezterm"
+cp -f "$WEZTERM_SRC" "$WEZTERM_DST"
+echo "WezTerm config copied to: $WEZTERM_DST"
+
+{{ else -}}
+echo "Not WSL, skipping."
+{{- end }}

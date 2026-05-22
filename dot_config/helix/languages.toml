@@ -1,0 +1,72 @@
+# Helix 公式仕様: [[language]] セクションを [language-server.X] より前にまとめる
+# (https://github.com/helix-editor/helix/wiki — TOML パース順の要件)
+
+# ── 言語定義 ════════════════════════════════════════════
+
+# ── Python ──────────────────────────────────
+[[language]]
+name = "python"
+auto-format = true
+formatter = { command = "ruff", args = ["format", "-"] }
+language-servers = ["ruff", "pyright"]
+
+# ── TypeScript / JavaScript ──────────────────
+[[language]]
+name = "typescript"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+[[language]]
+name = "javascript"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+# ── Rust ────────────────────────────────────
+[[language]]
+name = "rust"
+auto-format = true
+
+# ── Go ──────────────────────────────────────
+[[language]]
+name = "go"
+auto-format = true
+
+# ── Lua ─────────────────────────────────────
+[[language]]
+name = "lua"
+auto-format = true
+
+# ── Bash ────────────────────────────────────
+[[language]]
+name = "bash"
+auto-format = true
+formatter = { command = "shfmt", args = ["-i", "2"] }
+
+# ── TOML ────────────────────────────────────
+[[language]]
+name = "toml"
+auto-format = true
+
+# ── Markdown ────────────────────────────────
+[[language]]
+name = "markdown"
+language-servers = ["marksman"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "markdown"] }
+soft-wrap.enable = true
+text-width = 80
+
+
+# ── Language Server 設定 ═══════════════════════════════
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[language-server.marksman]
+command = "marksman"
+args = ["server"]

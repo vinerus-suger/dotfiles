@@ -1,0 +1,33 @@
+#!/bin/bash
+# fish_plugins hash: {{ include "dot_config/fish/fish_plugins" | sha256sum }}
+# fish_plugins が変更されたら自動で fisher update が走る
+
+# brew が PATH にない場合はロード
+if ! command -v brew &>/dev/null; then
+  if [ -d /home/linuxbrew/.linuxbrew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  elif [ -d /opt/homebrew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -d /usr/local/Homebrew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
+if ! command -v fish &>/dev/null; then
+  echo "fish not installed yet, skipping fisher sync."
+  exit 0
+fi
+
+echo "Syncing fish plugins via fisher..."
+
+fish -c '
+  # fisher 未インストールならインストール
+  if not functions -q fisher
+    echo "Installing fisher..."
+    curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+    fisher install jorgebucaran/fisher
+  end
+
+  # fish_plugins の内容と同期
+  fisher update
+'
