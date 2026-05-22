@@ -1,0 +1,4 @@
+# .bashrc を読み込む（インタラクティブログインシェル向け）
+if [ -f ~/.bashrc ]; then
+  source ~/.bashrc
+fi
