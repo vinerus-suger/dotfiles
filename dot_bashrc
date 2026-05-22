@@ -1,0 +1,14 @@
+# Homebrew PATH (Linux / WSL)
+if [ -d /home/linuxbrew/.linuxbrew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
+fi
+
+# インタラクティブな bash セッションで fish が使えるのにデフォルトシェルになっていない場合は切り替える
+# Dev Container など chsh が使えない環境向け
+case $- in
+  *i*)
+    if [ -z "$FISH_VERSION" ] && command -v fish >/dev/null 2>&1 && [ "$SHELL" != "$(command -v fish 2>/dev/null)" ]; then
+      exec fish
+    fi
+    ;;
+esac
