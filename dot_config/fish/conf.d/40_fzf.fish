@@ -15,4 +15,6 @@ set -gx FZF_DEFAULT_OPTS "\
   --color=prompt:#cba6f7,hl+:#f38ba8"
 
 # Ctrl+R: 履歴検索 / Ctrl+T: ファイル検索 / Alt+C: ディレクトリ移動
-# ↑ fzf --fish | source で自動設定される
+if functions -q fzf_configure_bindings 2>/dev/null
+    fzf_configure_bindings
+end
