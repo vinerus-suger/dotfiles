@@ -13,7 +13,7 @@
 ### Mac / WSL
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply <YOUR_USERNAME>
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply vinerus-suger
 ```
 
 実行後、Git / jj のユーザー情報を手動で設定してください。
@@ -27,15 +27,30 @@ jj config set --user user.email "you@example.com"
 
 ### Dev Container
 
-VS Code のユーザー設定に登録するだけで、コンテナ起動時に自動セットアップされます。
+プロジェクトルートに `.devcontainer/` ディレクトリを作成し、以下の 2 ファイルを追加します。
+
+**`.devcontainer/devcontainer.json`**
 
 ```json
-// settings.json
 {
-  "dotfiles.repository": "https://github.com/<YOUR_USERNAME>/dotfiles",
-  "dotfiles.installCommand": "~/dotfiles/install.sh"
+  "name": "Ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "postCreateCommand": "bash .devcontainer/setup.sh"
 }
 ```
+
+**`.devcontainer/setup.sh`**
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+if ! command -v chezmoi >/dev/null; then
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply vinerus-suger
+fi
+```
+
+VS Code で「Reopen in Container」を実行するとコンテナ起動時に `setup.sh` が自動で走り、chezmoi の初期化と設定適用まで完了します。
 
 ## ツール構成
 
