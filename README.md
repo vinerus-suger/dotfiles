@@ -13,7 +13,7 @@
 ### Mac / WSL
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply <YOUR_USERNAME>
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply <YOUR_USERNAME>
 ```
 
 実行後、Git / jj のユーザー情報を手動で設定してください。
