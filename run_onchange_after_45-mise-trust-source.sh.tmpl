@@ -4,6 +4,17 @@
 # dot_config/ で作業すると mise がこのファイルをプロジェクト設定として検出し
 # "not trusted" エラーを出すため、apply のたびに自動で trust する。
 
+# chezmoi 実行時は brew が PATH に入っていないため明示的にロード
+if ! command -v mise &>/dev/null; then
+  if [ -d /home/linuxbrew/.linuxbrew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  elif [ -d /opt/homebrew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -d /usr/local/Homebrew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+fi
+
 if ! command -v mise &>/dev/null; then
   echo "mise not found, skipping."
   exit 0
