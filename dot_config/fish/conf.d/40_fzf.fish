@@ -15,6 +15,6 @@ set -gx FZF_DEFAULT_OPTS "\
   --color=prompt:#cba6f7,hl+:#f38ba8"
 
 # Ctrl+R: 履歴検索 / Ctrl+T: ファイル検索 / Alt+C: ディレクトリ移動
-if functions -q fzf_configure_bindings 2>/dev/null
+if type -q fzf_configure_bindings
     fzf_configure_bindings
 end
