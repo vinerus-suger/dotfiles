@@ -2,9 +2,6 @@
 brew "fish"
 brew "starship"
 
-# ── dotfiles manager ──────────────────────────
-brew "chezmoi"
-
 # ── Git / VCS ─────────────────────────────────
 brew "git"
 brew "git-delta"  # 高機能 diff viewer
