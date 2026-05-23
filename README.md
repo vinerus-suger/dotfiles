@@ -8,6 +8,90 @@
 - macOS (Apple Silicon / Intel)
 - Dev Container (Docker)
 
+## このdotfilesを適用すると何ができるか
+
+### ワンコマンドで環境が揃う
+
+`chezmoi init --apply` 一発で Homebrew のインストール → パッケージ導入 → fish をデフォルトシェルに変更 → 各ツールの設定適用まで自動で完了します。新しいマシンや Dev Container でも同じ環境が数分で再現できます。
+
+### ターミナル操作が速くなる
+
+| やりたいこと | 操作 |
+|---|---|
+| よく使うディレクトリへ一発移動 | `cd proj` → zoxide が履歴から学習して補完 |
+| インタラクティブにディレクトリ選択 | `cdi`（fzf が起動） |
+| コマンド履歴をあいまい検索 | `Ctrl+R`（fzf.fish） |
+| ファイルをあいまい検索 | `Ctrl+F`（fzf.fish、バックエンドは fd） |
+
+### 組み込みコマンドが強化版に置き換わる
+
+```fish
+ls    # → eza（アイコン付き）
+ll    # → eza -lah --git（Gitの変更状態も表示）
+lt    # → eza --tree -L 2（ツリー表示）
+cat   # → bat（シンタックスハイライト、Catppuccin Mocha）
+du    # → dust（ディスク使用量をビジュアル表示）
+```
+
+### Gitワークフローが快適になる
+
+```fish
+lg    # lazygit を起動（TUIでステージ・コミット・プッシュを一括操作）
+lj    # lazyjj を起動（Jujutsu の TUI）
+
+# git diff が delta で色付き表示（行内差分・シンタックスハイライト付き）
+git diff
+
+# Jujutsu 略語
+jjl   # jj log
+jjs   # jj status
+jjd   # jj diff
+jjp   # jj git push
+```
+
+### chezmoi の操作が略語で素早くできる
+
+```fish
+cza   # chezmoi apply  （設定を反映）
+czd   # chezmoi diff   （差分確認）
+cze   # chezmoi edit   （設定ファイルを編集）
+czu   # chezmoi update （リポジトリ更新＋適用を一発で）
+czcd  # chezmoi cd     （ソースディレクトリへ移動）
+```
+
+### Helix エディタで LSP 補完が動く
+
+インストール直後から以下の言語で補完・診断・フォーマットが使えます。
+
+| 言語 | LSP / フォーマッタ |
+|---|---|
+| Python | pyright（型補完）+ ruff（linting / format） |
+| Shell | shfmt（フォーマット） |
+| Markdown | marksman（リンク補完）+ prettier（フォーマット） |
+
+設定済みの Helix テーマは Catppuccin Mocha。相対行番号・インデントガイド・インレイヒント・ソフトラップも有効。
+
+### fish プラグインを追加するだけで自動同期される
+
+`dot_config/fish/fish_plugins` にプラグイン名を書くと、chezmoi がファイルの変更を検知して自動で `fisher update` を実行します。手動で `fisher install` を叩く必要はありません。
+
+### 環境ごとに設定が自動分岐する
+
+chezmoi テンプレートで環境を判定し、WSL・macOS・Linux で異なる設定を自動適用します。
+
+- **WSL**: WezTerm の設定ファイルを Windows 側へ自動シンボリックリンク
+- **macOS**: `Brewfile.mac` の cask（フォント・GUI アプリ）を追加インストール
+
+### 言語バージョンを mise で一元管理
+
+mise を使って Python / Node.js / Ruby などをプロジェクトごとに切り替えられます。`.mise.toml` をリポジトリに置くだけでバージョンが固定されます。
+
+### 環境の健康診断ができる
+
+```fish
+dotfiles-doctor  # 全ツールのインストール状況を一覧表示
+```
+
 ## 初回セットアップ
 
 ### Mac / WSL
