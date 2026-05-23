@@ -5,8 +5,6 @@
 # ── フォント ──────────────────────────────────
 # yuru7/HackGen は 2024年12月リリースで NerdFont 合成版のファミリー名を
 # `HackGenNerd*` から `HackGen*NF` に変更。wezterm.lua は両方フォールバック対応済み。
-cask "font-hackgen-nerd"
-cask "font-jetbrains-mono-nerd-font"
 cask "font-moralerspace"
 
 # ── GUIアプリ ─────────────────────────────────
