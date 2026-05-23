@@ -1,0 +1,29 @@
+#!/bin/sh
+
+git config --global core.editor hx
+git config --global core.pager delta
+git config --global core.excludesfile ~/.config/git/ignore
+git config --global core.autocrlf false
+
+git config --global init.defaultBranch main
+
+git config --global interactive.diffFilter "delta --color-only"
+
+git config --global delta.navigate true
+git config --global delta.light false
+git config --global delta.side-by-side true
+git config --global delta.line-numbers true
+
+git config --global merge.conflictstyle diff3
+
+git config --global diff.colorMoved default
+
+git config --global alias.lg "log --oneline --graph --decorate --all"
+git config --global alias.st status
+git config --global alias.co checkout
+
+git config --global pull.rebase false
+
+{{ if .is_wsl -}}
+git config --global credential.helper "/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe"
+{{- end }}
