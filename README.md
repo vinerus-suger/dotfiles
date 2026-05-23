@@ -79,7 +79,7 @@ czcd  # chezmoi cd     （ソースディレクトリへ移動）
 
 chezmoi テンプレートで環境を判定し、WSL・macOS・Linux で異なる設定を自動適用します。
 
-- **WSL**: WezTerm の設定ファイルを Windows 側へ自動シンボリックリンク
+- **WSL**: WezTerm の設定ファイルを Windows 側へ自動コピー（WSL からのシンボリックリンクは Windows 側アプリに認識されないため）
 - **macOS**: `Brewfile.mac` の cask（フォント・GUI アプリ）を追加インストール
 
 ### 言語バージョンを mise で一元管理
@@ -205,8 +205,8 @@ dotfiles/
 ├── run_onchange_before_20-install-packages.sh.tmpl # Brewfile 変更時に再実行
 ├── run_once_after_30-setup-fish.sh.tmpl            # fish を default shell に
 ├── run_onchange_after_40-setup-wsl-symlinks.sh.tmpl # WSL: WezTerm 設定を Windows へコピー（変更時に再実行）
-├── run_once_after_60-install-bat-themes.sh.tmpl    # bat: Catppuccin テーマ
 ├── run_onchange_after_50-fisher-sync.sh.tmpl       # fish_plugins 変更時に再実行
+├── run_once_after_60-install-bat-themes.sh.tmpl    # bat: Catppuccin テーマ
 └── .devcontainer/devcontainer.json
 ```
 
