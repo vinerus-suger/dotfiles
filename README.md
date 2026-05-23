@@ -238,3 +238,4 @@ dotfiles-doctor
 ## セキュリティ
 
 このリポジトリは公開されることを想定しています。**API キー・パスワード・秘密情報は絶対に含めない**でください。秘密情報を扱う場合は chezmoi の [encrypted templates](https://www.chezmoi.io/user-guide/encryption/) や [secret managers](https://www.chezmoi.io/user-guide/password-managers/) を使用してください。
+
