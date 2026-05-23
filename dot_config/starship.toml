@@ -9,7 +9,6 @@ $directory\
 [](bg:yellow fg:peach)\
 $git_branch\
 $git_status\
-$jj_status\
 [](fg:yellow bg:green)\
 $c\
 $rust\
@@ -83,10 +82,6 @@ style = "bg:yellow"
 format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
 
 [git_status]
-style = "bg:yellow"
-format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
-
-[jj_status]
 style = "bg:yellow"
 format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
 
