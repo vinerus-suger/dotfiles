@@ -1,7 +1,6 @@
 # ── Shell ────────────────────────────────────
 brew "fish"
 brew "starship"
-brew "chezmoi"
 
 # ── Git / VCS ─────────────────────────────────
 brew "git"
