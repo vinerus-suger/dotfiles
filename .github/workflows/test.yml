@@ -21,13 +21,9 @@ jobs:
         run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 
       - name: Render .chezmoi.toml.tmpl
-        # --promptString PROMPT=VALUE の PROMPT は promptStringOnce の第3引数にマッチ
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          chezmoi execute-template \
-            --init \
-            --promptString "Your full name=CI Test" \
-            --promptString "Your email address=ci@test.local" \
+          chezmoi execute-template --init \
             < .chezmoi.toml.tmpl > /tmp/rendered.toml
           echo "── Rendered .chezmoi.toml ──"
           cat /tmp/rendered.toml
