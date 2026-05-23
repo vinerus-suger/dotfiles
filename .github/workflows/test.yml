@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   template-validation:
     name: Template validation
@@ -28,28 +31,34 @@ jobs:
           echo "── Rendered .chezmoi.toml ──"
           cat /tmp/rendered.toml
 
-      - name: Render all .tmpl files individually
-        # 各テンプレートが個別にレンダーできるか確認（init 不要のもの）
+      - name: Render all .tmpl files
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          # ダミー設定を作って、source state テンプレートの検証
+          # sourceDir と data 変数を正しく設定して include が解決できるようにする
           mkdir -p "$HOME/.config/chezmoi"
-          cp /tmp/rendered.toml "$HOME/.config/chezmoi/chezmoi.toml"
+          IS_MAC=false
+          [ "$(uname -s)" = "Darwin" ] && IS_MAC=true
+          cat > "$HOME/.config/chezmoi/chezmoi.toml" << EOF
+          sourceDir = "$(pwd)"
+
+          [data]
+            is_wsl          = false
+            is_mac          = ${IS_MAC}
+            is_devcontainer = false
+          EOF
 
           fail=0
           while IFS= read -r tmpl; do
-            # .chezmoi.toml.tmpl は init テンプレートなので別途検証済み
             if [ "$tmpl" = "./.chezmoi.toml.tmpl" ]; then continue; fi
             echo "── Rendering: $tmpl"
-            if ! chezmoi execute-template < "$tmpl" > /dev/null 2>&1; then
-              # source-state テンプレートは chezmoi.sourceDir を期待するので
-              # execute-template 単独では失敗することがある。
-              # その場合は構文だけ別途検証
-              echo "  ⚠️  needs source state context (skipping detailed check)"
-            else
+            if chezmoi execute-template < "$tmpl" > /dev/null; then
               echo "  ✅ OK"
+            else
+              echo "  ❌ FAILED: $tmpl"
+              fail=1
             fi
           done < <(find . -name "*.tmpl" -not -path "./.git/*")
+          exit $fail
 
       - name: Verify file structure
         run: |
@@ -59,17 +68,67 @@ jobs:
           test -x install.sh || (echo "❌ install.sh not executable" && exit 1)
           echo "✅ File structure verified"
 
-  shellcheck:
-    name: ShellCheck (.sh only)
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run ShellCheck
+
+      - name: ShellCheck (.sh files)
         uses: ludeeus/action-shellcheck@2.0.0
         with:
           # fish 設定は ShellCheck の対象外、.tmpl は構文が違うので別途検証済み
           ignore_paths: dot_config
           ignore_names: "*.tmpl"
+
+      - name: Install fish for syntax check
+        run: sudo apt-get install -y fish
+
+      - name: Fish syntax check
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            echo "── Checking: $f"
+            if fish --no-execute "$f"; then
+              echo "  ✅ OK"
+            else
+              echo "  ❌ FAILED: $f"
+              fail=1
+            fi
+          done < <(find . -name "*.fish" -not -path "./.git/*")
+          exit $fail
+
+      - name: YAML validation
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            echo "── Validating: $f"
+            if yq '.' "$f" > /dev/null; then
+              echo "  ✅ OK"
+            else
+              echo "  ❌ FAILED: $f"
+              fail=1
+            fi
+          done < <(find . \( -name "*.yml" -o -name "*.yaml" \) -not -path "./.git/*")
+          exit $fail
+
+      - name: TOML validation
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            echo "── Validating: $f"
+            if python3 -c "
+import sys, tomllib
+with open(sys.argv[1], 'rb') as fh:
+    tomllib.load(fh)
+" "$f"; then
+              echo "  ✅ OK"
+            else
+              echo "  ❌ FAILED: $f"
+              fail=1
+            fi
+          done < <(find . -name "*.toml" -not -path "./.git/*")
+          exit $fail
 
   integration-test:
     name: Integration test (${{ matrix.os }})
@@ -131,3 +190,21 @@ jobs:
             exit 1
           fi
           echo "✅ mise trust OK"
+
+      - name: fisher とプラグインがインストールされているか
+        run: |
+          fish -c "
+            functions -q fisher
+            or begin
+              echo '❌ fisher not installed'
+              exit 1
+            end
+            echo '✅ fisher installed'
+            set installed (fisher list)
+            if not string match -q '*fzf.fish*' \$installed
+              echo '❌ fzf.fish not installed'
+              fisher list
+              exit 1
+            end
+            echo '✅ fish plugins installed'
+          "
