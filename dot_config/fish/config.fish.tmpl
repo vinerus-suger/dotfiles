@@ -20,3 +20,10 @@ alias pbpaste 'powershell.exe -command Get-Clipboard'
 {{ if .is_mac -}}
 # Mac 固有の設定があればここに追加
 {{- end }}
+
+# ── fzf キーバインド（conf.d より後に実行して上書きを防ぐ）─
+# fzf.fish プラグインの conf.d が Ctrl+T をデフォルトに戻すため、
+# config.fish の末尾で明示的に再設定する
+if type -q fzf_configure_bindings
+    fzf_configure_bindings --directory=ctrl-t
+end
