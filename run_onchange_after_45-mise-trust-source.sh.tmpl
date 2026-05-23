@@ -1,0 +1,17 @@
+#!/bin/bash
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# chezmoi ソースディレクトリ内の mise/config.toml を信頼済みにする。
+# dot_config/ で作業すると mise がこのファイルをプロジェクト設定として検出し
+# "not trusted" エラーを出すため、apply のたびに自動で trust する。
+
+if ! command -v mise &>/dev/null; then
+  echo "mise not found, skipping."
+  exit 0
+fi
+
+SOURCE_MISE="{{ .chezmoi.sourceDir }}/dot_config/mise/config.toml"
+
+if [ -f "$SOURCE_MISE" ]; then
+  mise trust "$SOURCE_MISE"
+  echo "mise: trusted $SOURCE_MISE"
+fi

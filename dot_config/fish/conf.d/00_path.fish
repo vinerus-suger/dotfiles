@@ -1,3 +1,6 @@
+# ── ローカルバイナリ（chezmoi 等の bootstrap インストール先）────
+fish_add_path -g ~/.local/bin
+
 # ── Homebrew PATH ─────────────────────────────
 # -g (global) フラグでセッションスコープに限定し、universal variable の汚染を防ぐ。
 # conf.d は fish 起動時に毎回読まれるので、毎回 idempotent に PATH が組み立てられる。
