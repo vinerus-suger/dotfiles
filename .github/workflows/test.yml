@@ -70,3 +70,64 @@ jobs:
           # fish 設定は ShellCheck の対象外、.tmpl は構文が違うので別途検証済み
           ignore_paths: dot_config
           ignore_names: "*.tmpl"
+
+  integration-test:
+    name: Integration test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link checkout to ~/dotfiles
+        run: ln -s "$GITHUB_WORKSPACE" ~/dotfiles
+
+      - name: Run install.sh
+        run: bash ~/dotfiles/install.sh
+
+      - name: Set PATH for verification
+        run: |
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
+
+      - name: chezmoi が ~/.local/bin 経由で使えるか
+        run: |
+          test -f "$HOME/.local/bin/chezmoi" || command -v chezmoi
+          chezmoi --version
+          echo "✅ chezmoi accessible"
+
+      - name: fish がインストールされているか
+        run: |
+          fish --version
+          echo "✅ fish installed"
+
+      - name: starship.toml が生成されているか
+        run: |
+          test -f "$HOME/.config/starship.toml" \
+            && echo "✅ starship.toml exists" \
+            || (echo "❌ starship.toml missing"; exit 1)
+
+      - name: fish の PATH に ~/.local/bin が含まれているか
+        run: |
+          fish -c "
+            contains -- \$HOME/.local/bin \$PATH
+            or begin
+              echo '❌ ~/.local/bin not in fish PATH'
+              echo 'PATH: '\$PATH
+              exit 1
+            end
+            echo '✅ ~/.local/bin in fish PATH'
+          "
+
+      - name: mise が chezmoi ソースを trust しているか
+        run: |
+          cd ~/dotfiles/dot_config
+          if mise config ls 2>&1 | grep -q "not trusted"; then
+            echo "❌ mise still shows 'not trusted' in dotfiles source dir"
+            mise config ls 2>&1
+            exit 1
+          fi
+          echo "✅ mise trust OK"
