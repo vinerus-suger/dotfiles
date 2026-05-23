@@ -14,8 +14,4 @@ set -gx FZF_DEFAULT_OPTS "\
   --color=marker:#f5e0dc,fg+:#cdd6f4 \
   --color=prompt:#cba6f7,hl+:#f38ba8"
 
-# fzf.fish キーバインド（デフォルトから Ctrl+T をディレクトリ検索に割り当て）
-# Ctrl+T: ディレクトリ検索, Ctrl+R: 履歴, Ctrl+Alt+S: git status
-if type -q fzf_configure_bindings
-    fzf_configure_bindings --directory=ctrl-t
-end
+# キーバインドは config.fish で設定（conf.d の読み込み順の影響を避けるため）
