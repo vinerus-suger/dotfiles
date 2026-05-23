@@ -37,7 +37,14 @@ fi
 # デフォルトシェルを変更（失敗してもエラーで止めない）
 if [ "$SHELL" != "$FISH_PATH" ]; then
   echo "Changing default shell to fish..."
-  chsh -s "$FISH_PATH" 2>/dev/null || echo "Failed to chsh (this is fine in containers without sudo)."
+  if command -v sudo &>/dev/null; then
+    # sudo 経由なら対話プロンプトが出ない（NOPASSWD 設定 or コンテナ環境）
+    sudo chsh -s "$FISH_PATH" "$USER" 2>/dev/null \
+      || sudo usermod -s "$FISH_PATH" "$USER" 2>/dev/null \
+      || echo "Failed to change default shell (this is fine in containers)."
+  else
+    chsh -s "$FISH_PATH" 2>/dev/null || echo "Failed to chsh (no sudo available)."
+  fi
 else
   echo "fish is already the default shell, skipping."
 fi
