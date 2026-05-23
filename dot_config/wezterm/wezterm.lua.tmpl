@@ -37,6 +37,9 @@ config.scrollback_lines = 10000
 -- ── ベル無効 ──────────────────────────────────
 config.audible_bell = "Disabled"
 
+-- ── 互換性 ────────────────────────────────────
+config.term = "xterm-256color"
+
 -- ── OS 別設定 ─────────────────────────────────
 {{ if .is_wsl -}}
 -- WSL: デフォルトシェルを WSL の fish に設定
