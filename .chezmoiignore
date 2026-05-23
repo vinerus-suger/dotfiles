@@ -5,7 +5,6 @@ README.md
 .git
 .gitignore
 .github
-.devcontainer
 
 # ── スクリプトが参照する管理ファイル ─────────
 # これらは source 内では使うが、ホームディレクトリには置きたくない
