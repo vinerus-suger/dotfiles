@@ -109,6 +109,8 @@ jj config set --user user.name  "Your Name"
 jj config set --user user.email "you@example.com"
 ```
 
+> **`.gitconfig` について**: delta・alias などの共通設定は chezmoi のスクリプトが `git config --global` で書き込みます。ファイルごと管理する方式だと `[user]` などの環境固有設定を chezmoi が上書きしてしまうため、この方式を採用しています。設定を削除したい場合は `git config --global --unset <key>` で手動対応が必要です。
+
 ### Dev Container
 
 プロジェクトルートに `.devcontainer/` ディレクトリを作成し、以下の 2 ファイルを追加します。
@@ -185,7 +187,7 @@ dotfiles/
 ├── Brewfile                 # 共通CLI（Mac/Linux両対応）
 ├── Brewfile.mac             # Mac 専用（cask: フォント・GUIアプリ）
 ├── install.sh               # Dev Container 用ブートストラップ
-├── dot_gitconfig.tmpl
+├── run_onchange_after_55-setup-gitconfig.sh.tmpl  # git config --global で共通設定を書き込み（変更時に再実行）
 ├── dot_config/
 │   ├── git/ignore           # global gitignore
 │   ├── fish/
