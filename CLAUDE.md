@@ -27,13 +27,13 @@ dotfiles/
 │   └── mise/config.toml
 ├── Brewfile                       # 共通パッケージ（Mac/Linux）
 ├── Brewfile.mac                   # Mac 専用（cask フォント等）
-├── dot_gitconfig.tmpl
 ├── run_once_before_10-install-homebrew.sh.tmpl
 ├── run_onchange_before_20-install-packages.sh.tmpl  # Brewfile 変更時に再実行
 ├── run_once_after_30-setup-fish.sh.tmpl             # fish をデフォルトシェルに
 ├── run_once_after_35-setup-starship.sh              # starship preset 適用
 ├── run_onchange_after_40-setup-wsl-symlinks.sh.tmpl
 ├── run_onchange_after_50-fisher-sync.sh.tmpl        # fish_plugins 変更時に再実行
+├── run_onchange_after_55-setup-gitconfig.sh.tmpl   # git config --global で共通設定を書き込み
 └── run_once_after_60-install-bat-themes.sh.tmpl
 ```
 
@@ -43,7 +43,15 @@ dotfiles/
 
 - **fish プラグインの追加・削除**は `dot_config/fish/fish_plugins` を編集するだけでよい。`run_onchange_after_50-fisher-sync.sh.tmpl` がファイルのハッシュを監視して自動で `fisher update` を実行する。
 
+- **`.gitconfig` は chezmoi で直接管理しない**。ファイルごとコピーする方式だと `[user]` など環境固有の設定を chezmoi が上書きしてしまう問題があったため、delta・alias などの共通設定のみ `run_onchange_after_55-setup-gitconfig.sh.tmpl` が `git config --global` で個別に書き込む方式に変更した。`[user]` などの環境固有設定は各マシンで手動設定する。設定を削除したい場合は `git config --global --unset <key>` で手動対応が必要（スクリプト方式は追加・上書きのみで削除はできないため）。
+
 - **`.tmpl` ファイル**は chezmoi のテンプレート。`{{ if .is_wsl }}` / `{{ if .is_mac }}` で環境分岐している。変数は `.chezmoi.toml.tmpl` で定義。
+
+## ブランチ・PR ルール
+
+このリポジトリは **main への直接 push が禁止**されており、すべての変更は PR 経由でマージする必要がある。また PR には CI（template 検証・shellcheck）のステータスチェックが必須。
+
+変更を加える際は必ず作業ブランチを切り、PR を作成してマージすること。
 
 ## 作業フロー
 
@@ -58,7 +66,7 @@ git commit -m "feat: ..."
 git push -u origin feat/xxx
 
 # GitHub で PR を作成してマージ
-# ※ マージ済みブランチは自動削除される設定あり
+gh pr create
 ```
 
 ## 対応環境
