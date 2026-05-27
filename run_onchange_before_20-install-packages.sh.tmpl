@@ -24,7 +24,8 @@ BREWFILE="{{ .chezmoi.sourceDir }}/Brewfile"
 
 if [ -f "$BREWFILE" ]; then
   echo "Installing packages from Brewfile..."
-  brew bundle --file="$BREWFILE"
+  # --verbose: 各パッケージのダウンロード・インストール進捗を表示する
+  brew bundle --file="$BREWFILE" --verbose
 else
   echo "Brewfile not found, skipping."
 fi
@@ -33,6 +34,6 @@ fi
 BREWFILE_MAC="{{ .chezmoi.sourceDir }}/Brewfile.mac"
 if [ -f "$BREWFILE_MAC" ]; then
   echo "Installing Mac-only packages from Brewfile.mac..."
-  brew bundle --file="$BREWFILE_MAC"
+  brew bundle --file="$BREWFILE_MAC" --verbose
 fi
 {{- end }}
