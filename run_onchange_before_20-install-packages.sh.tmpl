@@ -4,7 +4,7 @@
 # Brewfile.mac hash: {{ include "Brewfile.mac" | sha256sum }}
 {{- end }}
 
-set -e
+set -eo pipefail
 
 # brew が PATH にない場合は shellenv を読む（直前のスクリプトでインストール直後など）
 if ! command -v brew &>/dev/null; then
@@ -24,8 +24,13 @@ BREWFILE="{{ .chezmoi.sourceDir }}/Brewfile"
 
 if [ -f "$BREWFILE" ]; then
   echo "Installing packages from Brewfile..."
-  # --verbose: 各パッケージのダウンロード・インストール進捗を表示する
-  brew bundle --file="$BREWFILE" --verbose
+  # --verbose: 各パッケージの進捗を表示
+  # tr + grep: \r で同一行を上書きする進捗バーが改行として表示される問題を解消
+  #   - tr '\r' '\n' : \r を \n に変換して行として分離
+  #   - grep -Ev ... : # で始まる行（####進捗バー）と空行を除外
+  brew bundle --file="$BREWFILE" --verbose 2>&1 | \
+    tr '\r' '\n' | \
+    grep --line-buffered -Ev '^[[:space:]]*#|^[[:space:]]*$'
 else
   echo "Brewfile not found, skipping."
 fi
@@ -34,6 +39,8 @@ fi
 BREWFILE_MAC="{{ .chezmoi.sourceDir }}/Brewfile.mac"
 if [ -f "$BREWFILE_MAC" ]; then
   echo "Installing Mac-only packages from Brewfile.mac..."
-  brew bundle --file="$BREWFILE_MAC" --verbose
+  brew bundle --file="$BREWFILE_MAC" --verbose 2>&1 | \
+    tr '\r' '\n' | \
+    grep --line-buffered -Ev '^[[:space:]]*#|^[[:space:]]*$'
 fi
 {{- end }}
