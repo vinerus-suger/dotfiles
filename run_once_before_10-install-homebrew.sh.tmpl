@@ -1,12 +1,27 @@
 #!/bin/bash
 # Homebrew のインストール（未インストールの場合のみ実行）
 # NONINTERACTIVE=1 を付けて DevContainer・CI 等の非対話環境でも止まらないように
+
+set -e
+
+{{ if not .is_mac -}}
+# Linux (WSL 含む): Homebrew が必要とする依存パッケージを先に入れる。
+# sudo が必要な処理をここでまとめて実行し、インストール途中でパスワードを
+# 聞かれないようにする。
+if ! command -v brew &>/dev/null && command -v apt-get &>/dev/null; then
+  echo "==> [Linux] Homebrew の依存パッケージをインストールします (sudo が必要です)..."
+  sudo -v  # ← ここでパスワードを一度入力。以降の sudo はキャッシュを利用
+  sudo apt-get update -q
+  sudo apt-get install -y build-essential curl file git
+fi
+{{ end -}}
+
 if ! command -v brew &>/dev/null; then
-  echo "Installing Homebrew..."
+  echo "==> Homebrew をインストールしています..."
   NONINTERACTIVE=1 /bin/bash -c \
     "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
-  echo "Homebrew already installed, skipping."
+  echo "Homebrew はインストール済みです。スキップします。"
 fi
 
 # インストール直後は brew が PATH に通っていないのでこのスクリプト内では明示的にロード
