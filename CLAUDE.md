@@ -47,6 +47,28 @@ dotfiles/
 
 - **`.tmpl` ファイル**は chezmoi のテンプレート。`{{ if .is_wsl }}` / `{{ if .is_mac }}` で環境分岐している。変数は `.chezmoi.toml.tmpl` で定義。
 
+## Dev Container での注意点
+
+Dev Container 内には git リポジトリが **2つ** 存在する。混同しないこと。
+
+| パス | 用途 |
+|------|------|
+| `/workspaces/dotfiles作成/dotfiles/` | 開発用ワークスペース（編集・push する場所） |
+| `~/.local/share/chezmoi/` | chezmoi が実際に使うソースディレクトリ（GitHub から pull される） |
+
+**Claude（AI）は開発用ワークスペースだけを触ること。** `~/.local/share/chezmoi/` を直接操作すると `chezmoi update` が壊れる原因になる（過去に発生した事例: AI が chezmoi ソースディレクトリで直接ブランチを切り替えたため、削除済みブランチを参照し続けて `chezmoi update` が失敗した）。
+
+### `chezmoi update` が失敗した場合の復旧
+
+```bash
+# 原因確認（main 以外のブランチにいたら要修正）
+git -C $(chezmoi source-path) branch --show-current
+
+# 修正
+git -C $(chezmoi source-path) checkout main
+git -C $(chezmoi source-path) pull origin main
+```
+
 ## ブランチ・PR ルール
 
 このリポジトリは **main への直接 push が禁止**されており、すべての変更は PR 経由でマージする必要がある。また PR には CI（template 検証・shellcheck）のステータスチェックが必須。
