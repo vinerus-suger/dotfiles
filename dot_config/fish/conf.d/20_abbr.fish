@@ -29,6 +29,10 @@ abbr -a cze  'chezmoi edit'
 abbr -a czu  'chezmoi update'
 abbr -a czcd 'chezmoi cd'
 
+# ── データサイエンス / ML ──────────────────────
+abbr -a j    'just'
+abbr -a ddb  'duckdb'
+
 # ── ナビゲーション ────────────────────────────
 abbr -a ..    'cd ..'
 abbr -a ...   'cd ../..'
