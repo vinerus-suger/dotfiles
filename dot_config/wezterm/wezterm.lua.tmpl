@@ -38,8 +38,10 @@ config.scrollback_lines = 10000
 -- ── ベル無効 ──────────────────────────────────
 config.audible_bell = "Disabled"
 
--- ── 互換性 ────────────────────────────────────
-config.term = "xterm-256color"
+-- ── ターミナル識別子 ──────────────────────────
+-- "wezterm" terminfo: Kitty keyboard protocol・true color など拡張機能を有効化
+-- SSH 先に wezterm terminfo がない場合は `TERM=xterm-256color ssh ...` で接続
+config.term = "wezterm"
 
 -- ── OS 別設定 ─────────────────────────────────
 {{ if .is_wsl -}}

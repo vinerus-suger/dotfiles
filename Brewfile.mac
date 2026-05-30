@@ -3,9 +3,11 @@
 #       なので tap は不要です。
 
 # ── フォント ──────────────────────────────────
-# yuru7/HackGen は 2024年12月リリースで NerdFont 合成版のファミリー名を
-# `HackGenNerd*` から `HackGen*NF` に変更。wezterm.lua は両方フォールバック対応済み。
+# Moralerspace: v2.0.0 から NF グリフを本体に統合。font-moralerspace で OK（font-moralerspace-nf は廃止）
+# HackGen: yuru7/HackGen は 2024年12月リリースで NerdFont 合成版のファミリー名を
+#          `HackGenNerd*` から `HackGen*NF` に変更。wezterm.lua は両方フォールバック対応済み。
 cask "font-moralerspace"
+cask "font-hackgen-nerd"
 
 # ── GUIアプリ ─────────────────────────────────
 cask "wezterm"

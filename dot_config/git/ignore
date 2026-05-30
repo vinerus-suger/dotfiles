@@ -23,6 +23,3 @@ __pycache__/
 node_modules/
 .env
 .env.local
-
-# ── chezmoi ──────────────────────────────────
-.chezmoiscripts/
