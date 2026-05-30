@@ -84,6 +84,9 @@ git -C $(chezmoi source-path) pull origin main
 git checkout main && git pull
 git checkout -b feat/xxx  # または fix/xxx
 
+# コミット前に必ず現在のブランチを確認する
+git branch --show-current
+
 # 編集・コミット・push
 git add <files>
 git commit -m "feat: ..."
@@ -100,6 +103,7 @@ gh pr merge <PR番号> --merge
 
 `--auto` を付けると CI が通り次第自動でマージされる。CI 状況は `gh pr checks <PR番号>` で確認できる。
 
+> **ブランチ間違いに注意**: 複数の作業ブランチを並行して触るときは、コミット前に `git branch --show-current` で現在のブランチを必ず確認すること。間違えた場合は `git revert` で打ち消してから正しいブランチに `git cherry-pick` する。
 ## 対応環境
 
 - macOS (Apple Silicon / Intel)
