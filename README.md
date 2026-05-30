@@ -125,6 +125,21 @@ jj config set --user user.email "you@example.com"
 }
 ```
 
+> **uv キャッシュを永続化したい場合**: `remoteEnv` で `UV_CACHE_DIR` をワークスペース内に向けると、コンテナを再ビルドしてもキャッシュが消えません（`/workspaces` は Docker ボリュームとしてマウントされるため）。
+>
+> ```json
+> {
+>   "name": "Ubuntu",
+>   "image": "mcr.microsoft.com/devcontainers/base:noble",
+>   "postCreateCommand": "bash .devcontainer/setup.sh",
+>   "remoteEnv": {
+>     "UV_CACHE_DIR": "/workspaces/<project-name>/.cache/uv"
+>   }
+> }
+> ```
+>
+> `remoteEnv` はコンテナ内のすべてのプロセスに環境変数を渡す設定です。`UV_CACHE_DIR` 以外にも `PIP_CACHE_DIR` や `NPM_CONFIG_CACHE` など、ツールのキャッシュをワークスペース内に集約するテクニックとして広く使えます。
+
 **`.devcontainer/setup.sh`**
 
 ```bash
