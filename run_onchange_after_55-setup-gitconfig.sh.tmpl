@@ -24,6 +24,10 @@ git config --global alias.co checkout
 
 git config --global pull.rebase false
 
+git config --global fetch.prune true
+git config --global rerere.enabled true
+git config --global push.autoSetupRemote true
+
 {{ if .is_wsl -}}
 git config --global credential.helper "/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe"
 {{- end }}
