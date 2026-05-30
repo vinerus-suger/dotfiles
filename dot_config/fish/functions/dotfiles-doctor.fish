@@ -47,7 +47,11 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
         "Editor & LSP|marksman|marksman"            \
         "Editor & LSP|prettier|prettier"            \
         "Version managers|mise|mise"                \
-        "Docker|lazydocker|lazydocker"
+        "Docker|lazydocker|lazydocker"              \
+        "データサイエンス / ML|jq|jq"               \
+        "データサイエンス / ML|uv|uv"               \
+        "データサイエンス / ML|git-lfs|git-lfs"     \
+        "データサイエンス / ML|just|just"
 
     set -l ok 0
     set -l ng 0
