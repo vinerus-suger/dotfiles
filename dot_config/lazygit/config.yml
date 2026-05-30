@@ -60,3 +60,37 @@ customCommands:
       - type: input
         title: "Commit message"
         key: Message
+
+  - key: "N"
+    command: 'git checkout -b "{{.Form.Prefix}}{{.Form.Name}}"'
+    context: "localBranches"
+    description: "New branch with prefix"
+    prompts:
+      - type: menu
+        title: "Branch prefix"
+        key: Prefix
+        options:
+          - name: "feat/"
+            description: "新機能・新モデル・新パイプライン（完成前提）"
+            value: "feat/"
+          - name: "fix/"
+            description: "バグ修正（壊れている動作を直す）"
+            value: "fix/"
+          - name: "data/"
+            description: "データ処理・前処理・特徴量エンジニアリング"
+            value: "data/"
+          - name: "exp/"
+            description: "実験・試行（ボツになる可能性あり）"
+            value: "exp/"
+          - name: "docs/"
+            description: "ドキュメント・README のみの変更"
+            value: "docs/"
+          - name: "refactor/"
+            description: "動作を変えないコード整理"
+            value: "refactor/"
+          - name: "chore/"
+            description: "依存・CI・環境設定など"
+            value: "chore/"
+      - type: input
+        title: "Branch name (e.g. add-xgboost-pipeline)"
+        key: Name
