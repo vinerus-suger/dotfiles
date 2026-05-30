@@ -2,6 +2,9 @@
 brew "fish"
 brew "starship"
 
+# ── GitHub CLI ───────────────────────────────
+brew "gh"
+
 # ── Git / VCS ─────────────────────────────────
 brew "git"
 brew "git-delta"  # 高機能 diff viewer
@@ -20,7 +23,6 @@ brew "fzf"
 brew "fd"        # fzf のファイル検索バックエンド
 brew "ripgrep"   # 高速 grep
 brew "dust"
-brew "gping"
 
 # ── Editor ────────────────────────────────────
 brew "helix"
@@ -40,5 +42,6 @@ brew "just"      # タスクランナー（実験コマンドの Makefile 代替
 brew "ruff"
 brew "pyright"
 brew "shfmt"
+brew "shellcheck" # CI と同じ検証をローカルでも実行できるように
 brew "marksman"   # Markdown LSP
 brew "prettier"   # Markdown / JS / TS フォーマッタ

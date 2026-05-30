@@ -6,6 +6,5 @@ python = "3.12"
 node   = "lts"
 
 [settings]
-experimental    = true
 auto_install    = true   # tools 配列の変更で自動インストール
 plugin_autoupdate_last_check_duration = "1 week"

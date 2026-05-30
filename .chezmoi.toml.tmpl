@@ -1,6 +1,7 @@
 {{- $is_wsl := false -}}
 {{- $is_mac := false -}}
 {{- $is_devcontainer := false -}}
+{{- $is_linux := false -}}
 
 {{- if env "WSL_DISTRO_NAME" -}}
   {{- $is_wsl = true -}}
@@ -12,6 +13,10 @@
   {{- $is_devcontainer = true -}}
 {{- end -}}
 
+{{- if and (eq .chezmoi.os "linux") (not $is_wsl) (not $is_devcontainer) -}}
+  {{- $is_linux = true -}}
+{{- end -}}
+
 # DevContainer / Codespaces ではクローン先が chezmoi のデフォルトと異なるため
 # sourceDir を明示的に記録しておく
 sourceDir = {{ .chezmoi.sourceDir | quote }}
@@ -20,3 +25,4 @@ sourceDir = {{ .chezmoi.sourceDir | quote }}
   is_wsl          = {{ $is_wsl }}
   is_mac          = {{ $is_mac }}
   is_devcontainer = {{ $is_devcontainer }}
+  is_linux        = {{ $is_linux }}

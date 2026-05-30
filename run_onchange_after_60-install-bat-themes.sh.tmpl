@@ -1,5 +1,6 @@
 #!/bin/bash
 # bat の Catppuccin テーマをインストール
+# catppuccin/bat version: v3.0.0  ← バージョンを変更すると chezmoi が再実行する
 set -e
 
 # brew が PATH にない場合はロード
@@ -25,10 +26,8 @@ mkdir -p "$THEME_DIR"
 BASE_URL="https://github.com/catppuccin/bat/raw/main/themes"
 for theme in "Catppuccin Mocha" "Catppuccin Macchiato" "Catppuccin Frappe" "Catppuccin Latte"; do
   filename="${theme}.tmTheme"
-  if [ ! -f "$THEME_DIR/$filename" ]; then
-    echo "Downloading $filename..."
-    curl -fsSL "${BASE_URL}/${filename// /%20}" -o "$THEME_DIR/$filename"
-  fi
+  echo "Downloading $filename..."
+  curl -fsSL "${BASE_URL}/${filename// /%20}" -o "$THEME_DIR/$filename"
 done
 
 # テーマキャッシュを再構築

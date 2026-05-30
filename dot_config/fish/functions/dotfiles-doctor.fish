@@ -40,7 +40,6 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
         "CLI tools|fd|fd"                           \
         "CLI tools|ripgrep|rg"                      \
         "CLI tools|dust|dust"                       \
-        "CLI tools|gping|gping"                     \
         "Editor & LSP|helix|hx"                     \
         "Editor & LSP|ruff|ruff"                    \
         "Editor & LSP|pyright|pyright-langserver"   \
