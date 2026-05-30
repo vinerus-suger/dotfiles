@@ -32,9 +32,9 @@ brew "lazydocker"
 
 # ── データサイエンス / ML ──────────────────────
 brew "jq"        # JSON 処理（API レスポンス・設定ファイル操作）
-brew "uv"        # 高速 Python パッケージマネージャ（pip/venv 代替）
 brew "git-lfs"   # 大容量ファイル管理（モデル重みデータ・データセット）
-brew "just"      # タスクランナー（実験コマンドの Makefile 代替）
+# uv は mise で管理（dot_config/mise/config.toml 参照）
+# just は mise の内蔵タスクランナーで代替
 
 # ── 言語ツール（Helix LSP連携）───────────────
 brew "ruff"

@@ -50,8 +50,7 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
         "Docker|lazydocker|lazydocker"              \
         "データサイエンス / ML|jq|jq"               \
         "データサイエンス / ML|uv|uv"               \
-        "データサイエンス / ML|git-lfs|git-lfs"     \
-        "データサイエンス / ML|just|just"
+        "データサイエンス / ML|git-lfs|git-lfs"
 
     set -l ok 0
     set -l ng 0

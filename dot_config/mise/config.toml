@@ -4,6 +4,7 @@
 [tools]
 python = "3.12"
 node   = "lts"
+uv     = "latest"  # brew ではなく mise で管理（バージョン管理・一元化のため）
 
 [settings]
 auto_install    = true   # tools 配列の変更で自動インストール
