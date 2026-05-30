@@ -77,20 +77,33 @@ git -C $(chezmoi source-path) pull origin main
 
 ## 作業フロー
 
+この Dev Container 環境には **`gh` CLI が使用可能**。PR の作成・マージはすべて `gh` コマンドで完結できる。
+
 ```bash
 # 作業ブランチを切る（必ず main から）
 git checkout main && git pull
 git checkout -b feat/xxx  # または fix/xxx
+
+# コミット前に必ず現在のブランチを確認する
+git branch --show-current
 
 # 編集・コミット・push
 git add <files>
 git commit -m "feat: ..."
 git push -u origin feat/xxx
 
-# GitHub で PR を作成してマージ
-gh pr create
+# PR を作成
+gh pr create --title "タイトル" --body "説明"
+
+# CI 通過後に自動マージされるよう設定（推奨）
+gh pr merge <PR番号> --merge --auto
+# または CI 通過済みであれば即マージ
+gh pr merge <PR番号> --merge
 ```
 
+`--auto` を付けると CI が通り次第自動でマージされる。CI 状況は `gh pr checks <PR番号>` で確認できる。
+
+> **ブランチ間違いに注意**: 複数の作業ブランチを並行して触るときは、コミット前に `git branch --show-current` で現在のブランチを必ず確認すること。間違えた場合は `git revert` で打ち消してから正しいブランチに `git cherry-pick` する。
 ## 対応環境
 
 - macOS (Apple Silicon / Intel)
