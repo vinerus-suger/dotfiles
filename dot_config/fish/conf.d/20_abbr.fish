@@ -31,7 +31,6 @@ abbr -a czcd 'chezmoi cd'
 
 # ── データサイエンス / ML ──────────────────────
 abbr -a j    'just'
-abbr -a ddb  'duckdb'
 
 # ── ナビゲーション ────────────────────────────
 abbr -a ..    'cd ..'
