@@ -146,12 +146,25 @@ jj config set --user user.email "you@example.com"
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v chezmoi >/dev/null; then
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply vinerus-suger
+CHEZMOI_SOURCE="${HOME}/.local/share/chezmoi"
+
+if ! command -v chezmoi >/dev/null 2>&1; then
+    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ ! -d "$CHEZMOI_SOURCE/.git" ]; then
+    chezmoi init --apply vinerus-suger
+else
+    chezmoi update
 fi
 ```
 
 VS Code で「Reopen in Container」を実行するとコンテナ起動時に `setup.sh` が自動で走り、chezmoi の初期化と設定適用まで完了します。
+
+> **ポイント:**
+> - `-b ~/.local/bin` を指定することで chezmoi を `~/.local/bin/` にインストールし、PATH に通るようにしています（指定しないとカレントディレクトリの `./bin/` にインストールされ、`chezmoi` コマンドが見つからなくなります）
+> - `~/.local/share/chezmoi/.git` の有無で初回（`init --apply`）と再ビルド時（`update`）を自動判別します
 
 ## ツール構成
 
