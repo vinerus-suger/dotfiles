@@ -20,7 +20,6 @@ brew "fzf"
 brew "fd"        # fzf のファイル検索バックエンド
 brew "ripgrep"   # 高速 grep
 brew "dust"
-brew "gping"
 
 # ── Editor ────────────────────────────────────
 brew "helix"
