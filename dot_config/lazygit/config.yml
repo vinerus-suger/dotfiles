@@ -12,3 +12,41 @@ gui:
 
 os:
   editPreset: helix
+
+customCommands:
+  - key: "C"
+    command: 'git commit -m "{{.Form.Prefix}}{{.Form.Message}}"'
+    context: "files"
+    description: "Commit with conventional prefix"
+    prompts:
+      - type: menu
+        title: "Commit prefix"
+        key: Prefix
+        options:
+          - name: "feat"
+            description: "新機能"
+            value: "feat: "
+          - name: "fix"
+            description: "バグ修正"
+            value: "fix: "
+          - name: "docs"
+            description: "ドキュメント"
+            value: "docs: "
+          - name: "refactor"
+            description: "リファクタリング"
+            value: "refactor: "
+          - name: "test"
+            description: "テスト"
+            value: "test: "
+          - name: "chore"
+            description: "雑務・設定変更"
+            value: "chore: "
+          - name: "style"
+            description: "フォーマット・空白など"
+            value: "style: "
+          - name: "perf"
+            description: "パフォーマンス改善"
+            value: "perf: "
+      - type: input
+        title: "Commit message"
+        key: Message
