@@ -77,6 +77,8 @@ git -C $(chezmoi source-path) pull origin main
 
 ## 作業フロー
 
+この Dev Container 環境には **`gh` CLI が使用可能**。PR の作成・マージはすべて `gh` コマンドで完結できる。
+
 ```bash
 # 作業ブランチを切る（必ず main から）
 git checkout main && git pull
@@ -87,9 +89,16 @@ git add <files>
 git commit -m "feat: ..."
 git push -u origin feat/xxx
 
-# GitHub で PR を作成してマージ
-gh pr create
+# PR を作成
+gh pr create --title "タイトル" --body "説明"
+
+# CI 通過後に自動マージされるよう設定（推奨）
+gh pr merge <PR番号> --merge --auto
+# または CI 通過済みであれば即マージ
+gh pr merge <PR番号> --merge
 ```
+
+`--auto` を付けると CI が通り次第自動でマージされる。CI 状況は `gh pr checks <PR番号>` で確認できる。
 
 ## 対応環境
 
