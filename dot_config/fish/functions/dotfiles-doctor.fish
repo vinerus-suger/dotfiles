@@ -29,6 +29,7 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
         "Shell & Prompt|fisher|fisher"              \
         "dotfiles manager|chezmoi|chezmoi"          \
         "Git / VCS|git|git"                         \
+        "Git / VCS|gh|gh"                           \
         "Git / VCS|delta|delta"                     \
         "Git / VCS|lazygit|lazygit"                 \
         "Git / VCS|jj|jj"                           \
@@ -44,6 +45,7 @@ function dotfiles-doctor --description "Check dotfiles installation status (Mac 
         "Editor & LSP|ruff|ruff"                    \
         "Editor & LSP|pyright|pyright-langserver"   \
         "Editor & LSP|shfmt|shfmt"                  \
+        "Editor & LSP|shellcheck|shellcheck"        \
         "Editor & LSP|marksman|marksman"            \
         "Editor & LSP|prettier|prettier"            \
         "Version managers|mise|mise"                \
