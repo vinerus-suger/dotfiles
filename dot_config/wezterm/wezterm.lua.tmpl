@@ -38,6 +38,12 @@ config.scrollback_lines = 10000
 -- ── ベル無効 ──────────────────────────────────
 config.audible_bell = "Disabled"
 
+-- ── IME（日本語入力クラッシュ対策）──────────────
+-- use_ime を明示し、preedit を WezTerm 内蔵レンダラで描画することで
+-- Mac/Windows どちらのシステム IME との干渉によるクラッシュも防ぐ
+config.use_ime = true
+config.ime_preedit_rendering = "Builtin"
+
 -- ── ターミナル識別子 ──────────────────────────
 -- "wezterm" terminfo: Kitty keyboard protocol・true color など拡張機能を有効化
 -- SSH 先に wezterm terminfo がない場合は `TERM=xterm-256color ssh ...` で接続
