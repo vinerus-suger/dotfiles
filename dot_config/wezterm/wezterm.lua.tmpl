@@ -38,6 +38,10 @@ config.scrollback_lines = 10000
 -- ── ベル無効 ──────────────────────────────────
 config.audible_bell = "Disabled"
 
+-- ── IME（日本語入力クラッシュ対策）──────────────
+-- use_ime を明示することで IME preedit 描画の不安定動作を防ぐ
+config.use_ime = true
+
 -- ── ターミナル識別子 ──────────────────────────
 -- "wezterm" terminfo: Kitty keyboard protocol・true color など拡張機能を有効化
 -- SSH 先に wezterm terminfo がない場合は `TERM=xterm-256color ssh ...` で接続
@@ -49,6 +53,9 @@ config.term = "wezterm"
 config.default_prog = { "wsl.exe", "--", "fish" }
 
 {{ else if .is_mac -}}
+-- Mac: IME preedit をシステム任せにせず WezTerm 内蔵レンダラで描画（クラッシュ回避）
+config.ime_preedit_rendering = "Builtin"
+
 -- Mac: Homebrew の fish を使用（Apple Silicon / Intel 両対応）
 local function file_exists(path)
   local f = io.open(path, "r")
